@@ -1,5 +1,6 @@
 import ipaddress
 from tqdm import tqdm
+import numpy as np
 
 class Node:
     ''' ノード '''
@@ -48,6 +49,7 @@ class radix_tree:
         ''' ノードの検索 '''
         # /0ならrootのインデックスを返す
         if address == '':
+            print("omg")
             return self.root.key
         
         # インデックスの候補
@@ -74,6 +76,8 @@ class radix_tree:
             if tmp.key is not None:
                 candidate = tmp.key
 
+            print(tmp.key)
+
         return candidate
 
 def read_txt(path):
@@ -83,10 +87,15 @@ def read_txt(path):
     with open(path) as f:
         l = f.readlines()
 
-    # \nと空白を消す
+    # 無駄な文字を消す
     for i in range(len(l)):
-        l[i] = l[i].replace('\n', '')
-        l[i] = l[i].replace(' ', '')
+        if l[i].count(' ') >= 1:
+            l[i] = l[i][l[i].find(' ')+1:]
+            l[i] = l[i][:l[i].find(' ')]
+        else:
+            l[i] = l[i].replace('\n', '')
+
+    l = [s for s in l if s != '']
 
     return l
 
@@ -132,11 +141,10 @@ def pre_process(path):
     ''' txtファイルからアドレスを読み取る前処理 '''
 
     data_list = read_txt(path)
-
+    print(np.random.choice(data_list, 5, replace=False))
     address_list = []
 
     for data in tqdm(data_list):
-
         address_list.append(align_address(data))
 
     return address_list, data_list
@@ -144,6 +152,7 @@ def pre_process(path):
 if __name__ == '__main__':
     # txtファイルからアドレスを読み取る
     address_list, _ = pre_process('route.txt')
+    # address_list, _ = pre_process('route-01.txt')
     # 全アドレスをradix_treeに格納
     RT = radix_tree(address_list)
 
