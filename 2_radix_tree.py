@@ -49,7 +49,6 @@ class radix_tree:
         ''' ノードの検索 '''
         # /0ならrootのインデックスを返す
         if address == '':
-            print("omg")
             return self.root.key
         
         # インデックスの候補
@@ -75,8 +74,6 @@ class radix_tree:
             # 最後にたどったノードが持つkeyがインデックスになる
             if tmp.key is not None:
                 candidate = tmp.key
-
-            print(tmp.key)
 
         return candidate
 
@@ -141,7 +138,6 @@ def pre_process(path):
     ''' txtファイルからアドレスを読み取る前処理 '''
 
     data_list = read_txt(path)
-    print(np.random.choice(data_list, 5, replace=False))
     address_list = []
 
     for data in tqdm(data_list):
