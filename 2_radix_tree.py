@@ -1,6 +1,5 @@
 import ipaddress
 from tqdm import tqdm
-import numpy as np
 
 class Node:
     ''' ノード '''
